@@ -5,3 +5,5 @@ K
 tests/ip-rights-nft.test.ts,a/4/a4875c6a1d2c64bc31c8eadadeb5279481a173f3
 K
 contracts/ip-licensing.clar,f/e/fe9d96badedc9348aec51dd207d568dfb88f34ec
+J
+tests/ip-licensing.test.ts,1/9/1970428f30c0735e9d649c5a5fc0c807fc8855ec
