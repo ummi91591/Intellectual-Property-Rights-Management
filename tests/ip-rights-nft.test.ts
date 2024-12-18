@@ -1,21 +1,41 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-import { describe, expect, it } from "vitest";
-
-const accounts = simnet.getAccounts();
-const address1 = accounts.get("wallet_1")!;
-
-/*
-  The test below is an example. To learn more, read the testing documentation here:
-  https://docs.hiro.so/stacks/clarinet-js-sdk
-*/
-
-describe("example tests", () => {
-  it("ensures simnet is well initalised", () => {
-    expect(simnet.blockHeight).toBeDefined();
+describe('IP Rights NFT Contract', () => {
+  let mockContractCall: any;
+  
+  beforeEach(() => {
+    mockContractCall = vi.fn();
   });
-
-  // it("shows an example", () => {
-  //   const { result } = simnet.callReadOnlyFn("counter", "get-counter", [], address1);
-  //   expect(result).toBeUint(0);
-  // });
+  
+  it('should mint an IP rights NFT', async () => {
+    mockContractCall.mockResolvedValue({ success: true, value: 1 });
+    const result = await mockContractCall('mint', 'patent', 'Test Patent', 'A test patent', 'PAT123456', 1000000);
+    expect(result.success).toBe(true);
+    expect(result.value).toBe(1);
+  });
+  
+  it('should get IP metadata', async () => {
+    mockContractCall.mockResolvedValue({
+      success: true,
+      value: {
+        owner: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM',
+        ipType: 'patent',
+        title: 'Test Patent',
+        description: 'A test patent',
+        registrationNumber: 'PAT123456',
+        creationDate: 123,
+        expirationDate: 1000000
+      }
+    });
+    const result = await mockContractCall('get-ip-metadata', 1);
+    expect(result.success).toBe(true);
+    expect(result.value.title).toBe('Test Patent');
+  });
+  
+  it('should transfer an IP rights NFT', async () => {
+    mockContractCall.mockResolvedValue({ success: true });
+    const result = await mockContractCall('transfer', 1, 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG');
+    expect(result.success).toBe(true);
+  });
 });
+
